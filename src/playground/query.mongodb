@@ -1,0 +1,3 @@
+use("ecommerce")
+
+db.zips.find({state: "users"})
