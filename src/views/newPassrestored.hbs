@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+    <title>Nueva Contraseña</title>
+</head>
+<body class="bg-gray-100 h-screen flex justify-center items-center">
+
+    <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+        <form action="/api/v1/sessions/restorePass/{{tokenPass}}" method="post" class="space-y-4">
+            <p class="text-2xl font-semibold">Establecer nueva contraseña:</p>
+            
+            <div class="flex flex-col space-y-2">
+                <label for="password" class="text-lg text-gray-600">Contraseña:</label>
+                <input id="password" type="password" name="password" class="border rounded-md p-2 w-full focus:ring focus:ring-blue-200">
+            </div>
+
+            <div class="flex justify-end">
+                <input type="submit" value="RESTABLECER" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:ring focus:ring-blue-200">
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

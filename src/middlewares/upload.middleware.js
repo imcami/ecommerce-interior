@@ -1,4 +1,4 @@
-import { __dirname } from "../../utils/path.js";
+import { __dirname } from "../utils/path.js";
 import multer from "multer";
 
 const getDestination = (req, file, cb) => {

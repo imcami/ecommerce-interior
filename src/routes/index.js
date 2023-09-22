@@ -1,0 +1,14 @@
+import { Router } from "express";
+import viewRouter from "./views.routes.js";
+import userRouter from "./users.routes.js";
+import productRouter from "./products.routes.js";
+import cartRouter from "./cart.routes.js";
+import paymentRouter from "./payment.routes.js";
+
+export const router = Router();
+
+router.use("/views", viewRouter);
+router.use("/users", userRouter);
+router.use("/products", productRouter);
+router.use("/cart", cartRouter);
+router.use("/payment", paymentRouter);

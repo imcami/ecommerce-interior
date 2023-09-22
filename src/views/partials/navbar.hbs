@@ -1,0 +1,39 @@
+<nav class="bg-gray-100 p-4">
+  <div class="container mx-auto">
+    <div class="flex justify-between items-center">
+      <a href="/api/v1/products" class="text-lg font-semibold text-gray-700">Docklin</a>
+      <div class="flex">
+        <button class="lg:hidden px-2 py-1 text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700" id="menu-toggle">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+          </svg>
+        </button>
+        
+        <div class="hidden lg:flex items-center" id="menu">
+          {{#if isAdmin}}
+            <a href="/realtimeproducts" class="px-4 py-2 text-gray-700 hover:bg-gray-200 rounded">Administrador</a>
+          {{else if isPremium}}
+            <a href="/realtimeproducts" class="px-4 py-2 text-gray-700 hover:bg-gray-200 rounded">Administrador</a>
+          {{/if}}
+          {{#if user}}
+            <a href="/chat" class="px-4 py-2 text-gray-700 hover:bg-gray-200 rounded"><img src='/img/chat.png' alt="Chat" class="w-5 h-5"/></a>
+            <a href="/api/v1/cart/{{user.idCart}}" class="px-4 py-2 text-gray-700 hover:bg-gray-200 rounded">🛒</a>
+            <a href="/api/v1/sessions/logout" class="px-4 py-2 text-gray-700 hover:bg-gray-200 rounded">Cerrar sesión</a>
+            <a href="/api/v1/sessions/current" class="px-4 py-2 text-gray-700 hover:bg-gray-200 rounded">Perfil</a>
+          {{else}}
+            <a href="/api/v1/users/login" class="px-4 py-2 text-gray-700 hover:bg-gray-200 rounded">Iniciar sesión</a>
+            <a href="/api/v1/users/signup" class="px-4 py-2 text-gray-700 hover:bg-gray-200 rounded">Registrarme</a>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<script>
+  // Toggle menu for smaller screens
+  document.getElementById('menu-toggle').addEventListener('click', function() {
+    const menu = document.getElementById('menu');
+    menu.classList.toggle('hidden');
+  });
+</script>

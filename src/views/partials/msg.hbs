@@ -1,0 +1,21 @@
+{{#if success_msg}}
+  <div class="bg-green-500 text-white p-4 rounded-md relative mb-4" role="alert">
+    <strong>{{success_msg}}</strong>
+    <button type="button" class="absolute top-2 right-2 focus:outline-none" onclick="this.parentElement.remove();" aria-label="Close">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+  </div>
+{{/if}}
+
+{{#if error}}
+  <div class="bg-red-500 text-white p-4 rounded-md relative mb-4" role="alert">
+    <strong>{{error}}</strong>
+    <button type="button" class="absolute top-2 right-2 focus:outline-none" onclick="this.parentElement.remove();" aria-label="Close">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+  </div>
+{{/if}}

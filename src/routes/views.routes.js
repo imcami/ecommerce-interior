@@ -2,23 +2,23 @@ import { Router } from "express";
 import {
   authAdminOrUserPremium,
   isAuthenticated,
-} from "../middlewares/auth/auth.middleware.js";
+} from "../middlewares/auth.middlewares.js";
 import {
   messageChat,
   realtimeUpload,
   realtimeproducts,
-} from "../controllers/sockets.controllers.js";
-import uploader from "../middlewares/upload/uploader.middleware.js";
+} from "../controllers/socketio.controller.js";
+import uploader from "../middlewares/upload.middleware.js";
 
-const viewRouter = Router();
+const router = Router();
 
-viewRouter.get("/chat", isAuthenticated, messageChat);
-viewRouter.get("/realtimeproducts", authAdminOrUserPremium, realtimeproducts);
-viewRouter.post(
+router.get("/chat", isAuthenticated, messageChat);
+router.get("/realtimeproducts", authAdminOrUserPremium, realtimeproducts);
+router.post(
   "/realtimeproducts/upload",
   authAdminOrUserPremium,
   uploader.single("products"),
   realtimeUpload
 );
 
-export default viewRouter;
+export default router;

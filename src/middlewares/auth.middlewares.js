@@ -1,7 +1,7 @@
 export const isAuthenticated = (req, res, next) => {
   if (!req.user)
     return (
-      res.status(401).redirect("/api/users/login"),
+      res.status(401).redirect("/api/v1/users/login"),
       req.logger.error("Registrese para poder ingresar")
     );
 
@@ -19,7 +19,7 @@ export const isAuthenticated = (req, res, next) => {
 export const authUser = (req, res, next) => {
   if (!req.user)
     return (
-      res.status(401).redirect("/api/users/login"),
+      res.status(401).redirect("/api/v1/users/login"),
       req.logger.error("Registrese para poder ingresar")
     );
   if (req.user.role === "User") {
@@ -30,14 +30,14 @@ export const authUser = (req, res, next) => {
     req.logger.error(
       "solo los usuarios pueden ingresar a esta ruta. Registrate!"
     );
-    return res.redirect("/api/products");
+    return res.redirect("/api/v1/products");
   }
 };
 
 export const authAdminOrUserPremium = (req, res, next) => {
   if (!req.user)
     return (
-      res.status(401).redirect("/api/users/login"),
+      res.status(401).redirect("/api/v1/users/login"),
       req.logger.error("Registrese para poder ingresar")
     );
   if (req.user.role === "Admin") {
@@ -50,6 +50,6 @@ export const authAdminOrUserPremium = (req, res, next) => {
     next();
   } else {
     req.logger.error("no tienes los permisos suficientes");
-    return res.redirect("/api/products");
+    return res.redirect("/api/v1/products");
   }
 };

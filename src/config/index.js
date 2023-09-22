@@ -1,18 +1,7 @@
 import dotenv from "dotenv";
-import { Command } from "commander";
+import { options } from "../utils/commander.js";
 
-const program = new Command();
-
-program
-  .option("-m, --mode <mode>", "development environment", "dev")
-  .option("-m, --mode <mode>", "testing environment", "test")
-  .option("-m, --mode <mode>", "production environment", "prod")
-  .option("-f, --file <file>", "the file to read")
-  .option("-t --timeout <timeout>", "the timeout to read");
-
-program.parse();
-
-const env = program.opts.mode;
+const env = options.mode;
 
 let envFilePath = "";
 
@@ -29,7 +18,7 @@ dotenv.config({ path: envFilePath });
 const pss = process.env;
 
 export default {
-  port: +pss.PORT | 8081,
+  port: pss.PORT || 8081,
   mongo_url: pss.MONGO_URI,
   signed_cookie: pss.SIGNED_COOKIE,
   session_secret: pss.SESSION_SECRET,
@@ -41,4 +30,5 @@ export default {
   mailing_service: pss.MAILING_SERVICE,
   mailing_password: pss.MAILING_PASSWORD,
   node_env: pss.NODE_ENV,
+  stripe_secret: pss.STRIPE_SECRET,
 };

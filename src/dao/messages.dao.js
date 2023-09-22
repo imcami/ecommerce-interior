@@ -1,4 +1,4 @@
-import { messageModel } from "../dao/models/messageModel.js";
+import messageModel from "../dao/models/messageModel.js";
 
 export default class MessageManager {
   async findById() {

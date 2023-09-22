@@ -1,9 +1,9 @@
-import Product from "./models/product.model.js";
+import productModel from "./models/product.model.js";
 
-export class ProductDAO {
+export default class ProductDAO {
   async getProducts(queries) {
     let result;
-    const prods = await Product.find({}); // obtener todos los productos de la base de datos
+    const prods = await productModel.find({}); // obtener todos los productos de la base de datos
 
     // Filtramos los productos según el rango de precios, si es necesario
     queries.min || queries.max
@@ -18,7 +18,7 @@ export class ProductDAO {
   }
 
   async addProduct(product) {
-    const newProduct = new Product(product); // Creamos una nueva instancia del modelo Product con los datos del producto
+    const newProduct = new productModel(product); // Creamos una nueva instancia del modelo Product con los datos del producto
     const result = await newProduct.save(); // Guardamos el nuevo producto en la base de datos
     return result;
   }

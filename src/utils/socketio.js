@@ -1,12 +1,7 @@
-import { create, findAll } from "../services/messages.service.js";
-import {
-  createOne,
-  deleteOne,
-  findAll as findAllProducts,
-  findById,
-  updateOne,
-} from "../services/products.service.js";
-import { v4 as uuidv4 } from "uuid"; // genera un codigo random
+import { Logger } from "winston";
+import { create, findAll } from "../services/message.service.js";
+import productService from "../services/products.service.js";
+import { v4 as uuidv4 } from "uuid";
 
 let ownerEmail;
 let image;
@@ -26,16 +21,15 @@ export const usersOnline = (userOn) => {
 
 export default (io) => {
   io.on("connection", async (socket) => {
-    console.log("Client connected");
+    Logger("Client connected");
     //const user = socket.request.session.user
 
-    // C H A T
-
+    //Mensajes del chat
     const messagesList = async () => {
       const messages = await findAll();
       socket.emit("server:loadMessages", messages);
     };
-    messagesList(); // envío mi arreglo de mensajes
+    messagesList(); // envío arreglo de mensajes
 
     socket.on("client:sendMessage", async (data) => {
       await create({ user: users, message: data.msg });
@@ -45,7 +39,7 @@ export default (io) => {
       });
     });
 
-    // P R O D U C T S
+    // Productos
 
     const productsList = async () => {
       const products = await findAllProducts();
@@ -96,7 +90,6 @@ export default (io) => {
     });
 
     socket.emit("prueba", "probando");
-    //process.on('warning', e => console.warn('-----+------',e.stack))
     socket.on("disconnect", async () => {
       console.log(socket.id, "disconnected");
     });

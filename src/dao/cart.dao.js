@@ -1,44 +1,68 @@
+import cartModel from "./models/cart.model.js";
 
-import Cart from './models/cart.model.js';
-
-export class CartDAO {
-  async getCartByuserModelId(userId) {
-    const cart = await Cart.findOne({ userId }).populate('items.productId');
-    if (!cart) throw new Error('Cart not found');
-    return cart;
+export default class CartDao {
+  async createOne(obj) {
+    try {
+      const cart = await cartModel.create(obj);
+      return cart;
+    } catch (error) {
+      return error;
+    }
   }
 
-  async addItemToCart(userId, { productId, quantity }) {
-    const cart = await Cart.findOne({ userId });
-    if (!cart) throw new Error('Cart not found');
-    
-    const existingItemIndex = cart.items.findIndex(item => item.productId.toString() === productId.toString());
-
-    if (existingItemIndex > -1) {
-      // Actualizar cantidad si el producto ya existe en el carrito
-      cart.items[existingItemIndex].quantity += quantity;
-    } else {
-      // Añadir nuevo producto al carrito
-      cart.items.push({ productId, quantity });
+  async findOneById(cid) {
+    try {
+      const cartId = await cartModel.findOne(cid).populate("products.id_prod");
+      return cartId;
+    } catch (error) {
+      return error;
     }
-
-    await cart.save();
-    return cart;
   }
 
-  async removeItemFromCart(userId, productId) {
-    const cart = await Cart.findOne({ userId });
-    if (!cart) throw new Error('Cart not found');
-    
-    const existingItemIndex = cart.items.findIndex(item => item.productId.toString() === productId.toString());
-
-    if (existingItemIndex > -1) {
-      cart.items.splice(existingItemIndex, 1);
-      await cart.save();
-    } else {
-      throw new Error('Product not found in cart');
+  async deleteOne(pid) {
+    try {
+      const cart = await cartModel.findByIdAndDelete(pid);
+      return cart;
+    } catch (error) {
+      return error;
     }
+  }
 
-    return cart;
+  async deleteCart(cid) {
+    try {
+      const emptyCart = await cartModel.findOne(cid);
+      emptyCart.products = [];
+      await emptyCart.save();
+      return emptyCart;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async updateOne(cid, pid, quantity) {
+    try {
+      const cart = await this.findOneById(cid);
+      const arrayProducts = cart.products;
+      const findProd = arrayProducts.findIndex((prod) => prod.id_prod == pid);
+      arrayProducts[findProd].quantity =
+        arrayProducts[findProd].quantity + quantity;
+      const updateCart = await cartModel.updateOne(
+        { _id: cid },
+        { products: arrayProducts }
+      );
+      return updateCart;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async updateCart(cid, pid, quantity) {
+    try {
+      const cart = await this.findOneById(cid);
+      cart.products = { products: [{ id_prod: pid, quantity: quantity }] };
+      return cart;
+    } catch (error) {
+      return error;
+    }
   }
 }
