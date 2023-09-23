@@ -31,4 +31,5 @@ export default {
   mailing_password: pss.MAILING_PASSWORD,
   node_env: pss.NODE_ENV,
   stripe_secret: pss.STRIPE_SECRET,
+  production_domain: pss.PRODUCTION_DOMAIN,
 };

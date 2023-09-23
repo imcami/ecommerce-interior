@@ -1,7 +1,9 @@
 import cartService from "../services/cart.services.js";
 import PaymentService from "../services/payment.services.js";
 import { sendMail } from "../utils/nodemailer.js";
+import ticket from "../services/ticket.service.js";
 
+// Generar una orden de compra llamando esta ruta (GET), redirecciona al usuario a la pagina de pago.
 export const createCheckoutSession = async (req, res) => {
   try {
     const cartId = req.session.user.cart.id_cart;
@@ -15,6 +17,8 @@ export const createCheckoutSession = async (req, res) => {
     res.status(400).json({ error: { message: error.message } });
   }
 };
+
+//Ruta para redireccionar al usuario en caso de que la compra sea exitosa (GET). Envia un mail de confirmacion.
 
 export const successPayment = async (req, res) => {
   try {
@@ -40,6 +44,8 @@ export const successPayment = async (req, res) => {
     res.status(500).json({ error: { message: error.message } });
   }
 };
+
+//Ruta para redireccionar al usuario en caso de que la compra sea cancelada (GET), redirecciona al usuario a su carrito.
 
 export const cancelPayment = async (req, res) => {
   try {

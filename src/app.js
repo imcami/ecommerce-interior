@@ -5,13 +5,14 @@ import port from "./config/index.js";
 import { router } from "./routes/index.js";
 import session from "express-session";
 import { __dirname } from "./utils/path.js";
-import { initializePassport } from "passport";
+import { initializePassport } from "./utils/passport.js";
 import compression from "express-compression";
 import { addLogger } from "./utils/logger.js";
-import mongoose from "mongoose";
 import MongoStore from "connect-mongo"; //sessions con mongodb
 import * as path from "path";
 import config from "./config/index.js";
+import passport from "passport";
+
 //config
 export const app = express();
 

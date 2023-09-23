@@ -7,6 +7,7 @@ import paymentRouter from "./payment.routes.js";
 
 export const router = Router();
 
+// Definición de rutas
 router.use("/views", viewRouter);
 router.use("/users", userRouter);
 router.use("/products", productRouter);

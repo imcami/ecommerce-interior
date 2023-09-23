@@ -10,27 +10,29 @@ import uploader from "../middlewares/upload.middleware.js";
 
 const router = Router();
 
-//Ruta para iniciar sesión
+//Ruta para iniciar sesión de usuario (GET)
 router.get("/login", (req, res) => {
   res.render("login");
 });
-// Ruta para registro
+// Ruta para registro de usuario (GET)
 router.get("/signup", (req, res) => {
   res.render("signup");
 });
 
-// RESTABLECER CONTRASEÑA
+// RESTABLECER CONTRASEÑA DE USUARIO (GET)
 router.get("/restore", (req, res) => {
   res.render("restore");
 });
-//Validar token para restablecer contraseña
+//Validar token para restablecer contraseña (GET)
 router.get("/restorePass/:tokenPass", validateToken);
 
-// ROLES DE USUARIO
+// ROLES DE USUARIO (PUT)
+//Ruta para usuarios premium (PUT)
 router.put("/premium/:uid", changeRol);
 
-// SUBIDA DE ARCHIVOS
+// SUBIDA DE ARCHIVOS (POST)
 router.post("/:uid/documents", uploader.array("document", 3), uploads);
+// SUBIDA DE FOTO DE PERFIL (POST)
 router.post(
   "/:uid/current",
   isAuthenticated,

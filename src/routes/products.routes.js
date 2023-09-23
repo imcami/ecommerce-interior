@@ -15,15 +15,18 @@ import {
 } from "../controllers/products.controller.js";
 
 const router = Router();
-
+// Obtener todos los productos (GET)
 router.get("/", isAuthenticated, findAllProducts);
 
-//detalle del producto
+// Obtener un producto por su id (GET)
 router.get("/pid", isAuthenticated, findProduct);
 
-// usuario premium
+// Usuario Premium
+//Crear un producto (POST)
 router.post("/", authAdminOrUserPremium, createOneProduct);
-router.put("/:pid", authAdminOrUserPremium, updateOneProduct);
+//Actualizar un producto (PATCH)
+router.patch("/:pid", authAdminOrUserPremium, updateOneProduct);
+//Eliminar un producto (DELETE)
 router.delete("/:pid", authAdminOrUserPremium, deleteOneProduct);
 
 export default router;
