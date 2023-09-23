@@ -1,22 +1,36 @@
 import userModel from "./models/user.model.js";
 
 export default class userModelsDAO {
-  get = (params) => {
-    return userModel.find(params);
+  findUserById = async (id) => {
+    return await userModel.findById(id);
   };
 
-  getBy = (params) => {
-    return userModel.findOne(params);
+  findByEmail = async (email) => {
+    return userModel.findOne({ email: email });
   };
 
-  save = (doc) => {
-    return userModel.create(doc);
+  updateUser = async (id) => {
+    return await userModel.findByIdAndUpdate({ email: id });
   };
-
-  update = (id, doc) => {
-    return userModel.findByIdAndUpdate(id, { $set: doc });
+  getUserTokenFrom = (user) => {
+    return {
+      _id: user._id,
+      email: user.email,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      role: user.role,
+      documents: user.documents,
+      last_connection: user.last_connection,
+    };
   };
-  delete = (id) => {
-    return userModel.findByIdAndDelete(id);
+  findByToken = async (token) => {
+    return await userModel.find({ token: token });
   };
+  findByExpired = async (token, timeToExpired) => {
+    return await userModel.find({ token: token, expired: timeToExpired });
+  };
+  createOne = async (obj) => {
+    return await userModel.create(obj);
+  };
+  delete;
 }

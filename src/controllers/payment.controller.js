@@ -1,7 +1,6 @@
 import cartService from "../services/cart.services.js";
 import PaymentService from "../services/payment.services.js";
 import { sendMail } from "../utils/nodemailer.js";
-import ticket from "../services/ticket.service.js";
 
 // Generar una orden de compra llamando esta ruta (GET), redirecciona al usuario a la pagina de pago.
 export const createCheckoutSession = async (req, res) => {

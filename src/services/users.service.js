@@ -13,7 +13,7 @@ export const findUserByEmail = async (email) => {
 
 export const findUserById = async (id) => {
   try {
-    const userId = await usersManager.findById(id);
+    const userId = await usersManager.findUserById(id);
     return userId;
   } catch (error) {
     return error;

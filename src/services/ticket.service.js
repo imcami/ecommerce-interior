@@ -1,5 +1,5 @@
-import ticketDao from "../dao/ticket.dao.js";
-
+import TicketDao from "../dao/ticket.dao.js";
+const ticketDao = new TicketDao();
 class TicketService {
   async findAll() {
     try {
@@ -38,7 +38,7 @@ class TicketService {
   }
   async delete(id) {
     try {
-      return await ticketDao.delete(id);
+      return await ticketDao.deleteTicketByCode(id);
     } catch (error) {
       return error;
     }

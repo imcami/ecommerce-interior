@@ -1,5 +1,6 @@
-import Cart from "../dao/cart.dao.js";
+import cartManager from "../dao/cart.dao.js";
 
+const Cart = new cartManager();
 class CartService {
   async createOne(obj) {
     return await Cart.createOne(obj);

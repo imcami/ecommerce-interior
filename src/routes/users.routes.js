@@ -10,15 +10,6 @@ import uploader from "../middlewares/upload.middleware.js";
 
 const router = Router();
 
-//Ruta para iniciar sesión de usuario (GET)
-router.get("/login", (req, res) => {
-  res.render("login");
-});
-// Ruta para registro de usuario (GET)
-router.get("/signup", (req, res) => {
-  res.render("signup");
-});
-
 // RESTABLECER CONTRASEÑA DE USUARIO (GET)
 router.get("/restore", (req, res) => {
   res.render("restore");

@@ -1,32 +1,44 @@
 import productModel from "./models/product.model.js";
 
-export default class ProductDAO {
-  async getProducts(queries) {
-    let result;
-    const prods = await productModel.find({}); // obtener todos los productos de la base de datos
-
-    // Filtramos los productos según el rango de precios, si es necesario
-    queries.min || queries.max
-      ? (result = prods.filter(({ price }) =>
-          this.range(price, queries.min, queries.max)
-        ))
-      : (result = prods);
-
-    if (!result) throw new Error("Productos no encontradoss");
-
-    return result;
+export default class ProductManager {
+  async findAll(filter, obj) {
+    try {
+      const products = await productModel.find(filter, obj);
+      return products;
+    } catch (error) {
+      return error;
+    }
   }
-
-  async addProduct(product) {
-    const newProduct = new productModel(product); // Creamos una nueva instancia del modelo Product con los datos del producto
-    const result = await newProduct.save(); // Guardamos el nuevo producto en la base de datos
-    return result;
+  async findById(id) {
+    try {
+      const product = await productModel.findById(id);
+      return product;
+    } catch (error) {
+      return error;
+    }
   }
-
-  range(value, min, max) {
-    return (
-      (typeof min === "undefined" || value >= min) &&
-      (typeof max === "undefined" || value <= max)
-    );
+  async createOne(obj) {
+    try {
+      const products = await productModel.create(obj);
+      return products;
+    } catch (error) {
+      return error;
+    }
+  }
+  async updateOne(id, obj) {
+    try {
+      const updateProduct = await productModel.findByIdAndUpdate(id, obj);
+      return updateProduct;
+    } catch (error) {
+      return error;
+    }
+  }
+  async deleteOne(id) {
+    try {
+      const deleteProduct = await productModel.findByIdAndDelete(id);
+      return deleteProduct;
+    } catch (error) {
+      return error;
+    }
   }
 }

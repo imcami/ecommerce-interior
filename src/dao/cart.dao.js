@@ -18,6 +18,14 @@ export default class CartDao {
       return error;
     }
   }
+  async findOneAndUpdate(filter, update, options) {
+    try {
+      const cart = await cartModel.findOneAndUpdate(filter, update, options);
+      return cart;
+    } catch (error) {
+      return error;
+    }
+  }
 
   async deleteOne(pid) {
     try {
