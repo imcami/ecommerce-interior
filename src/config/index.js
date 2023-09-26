@@ -32,4 +32,5 @@ export default {
   node_env: pss.NODE_ENV,
   stripe_secret: pss.STRIPE_SECRET,
   production_domain: pss.PRODUCTION_DOMAIN,
+  jwt_secret: pss.JWT_SECRET,
 };

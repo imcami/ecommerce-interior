@@ -23,6 +23,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    token: {
+      type: String,
+      required: false,
+    },
     //indicar la última conexión del usuario mediante un last_connection
     last_connection: {
       type: Date,

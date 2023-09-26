@@ -2,7 +2,7 @@ import productService from "../services/products.service.js";
 import { addLogger } from "../utils/logger.js";
 export const findAllProducts = async (req, res) => {
   try {
-    const products = await productService.getAllProducts(query);
+    const products = await productService.getAll(query);
     products ? res.status(200).json(products) : res.status(200).json(products);
 
     if (products) {
@@ -19,7 +19,7 @@ export const findAllProducts = async (req, res) => {
 export const findProduct = async (req, res) => {
   const { pid } = req.params;
   try {
-    const product = await findById(pid);
+    const product = await productService.findById(pid);
     if (product) {
       res.render("productDetail", { product });
     } else {
@@ -86,7 +86,7 @@ export const createOneProduct = async (req, res, next) => {
 
 export const updateOneProduct = async (req, res) => {
   const pid = req.params.pid;
-  const product = await findById(pid);
+  const product = await productService.findById(pid);
   const obj = req.body;
   try {
     // rol del usuario
@@ -105,14 +105,14 @@ export const updateOneProduct = async (req, res) => {
 
 export const deleteOneProduct = async (req, res) => {
   const pid = req.params.pid;
-  const product = await findById(pid);
+  const product = await productService.findById(pid);
   try {
     //comprobar rol del usuario
     if (
       req.user.role === "Admin" ||
       (req.user.role === "Premium" && req.user.email === product.owner)
     ) {
-      const deleteProduct = await deleteOne(pid);
+      const deleteProduct = await productService.deleteOne(pid);
       res
         .status(200)
         .json({ message: "Product delete", product: deleteProduct });

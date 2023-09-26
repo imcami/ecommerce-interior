@@ -3,13 +3,15 @@ import { isAuthenticated } from "../middlewares/auth.middlewares.js";
 import ticketService from "../services/ticket.service.js";
 export const createCart = async (req, res) => {
   try {
-    const newCart = await cartService.create({ products: [] });
+    const newCart = await cartService.createOne({ products: [] });
     res.status(200).json(newCart);
+    return (req.session.cart = newCart._id); // Guardo el id del carrito en la sesión
   } catch (error) {
     req.logger.error("Error en createCart: " + error);
     res.status(500).json({ message: "Hubo un error al crear el carrito." });
   }
 };
+
 export const findCartById = async (req, res) => {
   const cid = req.params.cid;
   try {

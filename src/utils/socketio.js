@@ -1,6 +1,5 @@
 import { Logger } from "winston";
 import { create, findAll } from "../services/message.service.js";
-import productService from "../services/products.service.js";
 import { v4 as uuidv4 } from "uuid";
 
 let ownerEmail;
@@ -20,8 +19,8 @@ export const usersOnline = (userOn) => {
 };
 
 export default (io) => {
-  io.on("connection", async (socket) => {
-    Logger("Client connected");
+  io.on("Conexión", async (socket) => {
+    Logger("Cliente conectado");
     //const user = socket.request.session.user
 
     //Mensajes del chat

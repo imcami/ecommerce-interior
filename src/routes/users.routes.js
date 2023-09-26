@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { isAuthenticated } from "../middlewares/auth.middlewares.js";
 import {
-  validateToken,
   changeRol,
   uploadProfile,
   uploads,
@@ -9,13 +8,6 @@ import {
 import uploader from "../middlewares/upload.middleware.js";
 
 const router = Router();
-
-// RESTABLECER CONTRASEÑA DE USUARIO (GET)
-router.get("/restore", (req, res) => {
-  res.render("restore");
-});
-//Validar token para restablecer contraseña (GET)
-router.get("/restorePass/:tokenPass", validateToken);
 
 // ROLES DE USUARIO (PUT)
 //Ruta para usuarios premium (PUT)

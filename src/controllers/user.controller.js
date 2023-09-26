@@ -1,5 +1,6 @@
-import { findUserById, updateUser } from "../services/users.service.js";
-
+import config from "../config/index.js";
+import { findUserById } from "../services/users.service.js";
+import jwt from "jsonwebtoken";
 export const changeRol = async (req, res) => {
   try {
     const uid = req.params.uid;
@@ -54,8 +55,8 @@ export const uploads = async (req, res) => {
 export const validateToken = async (req, res) => {
   try {
     const token = req.params.tokenPass;
-    const payload = jwt.verify(token, process.env.SECRET);
-    const user = await findByEmail(payload.email);
+    const payload = jwt.verify(token, config.session_secret);
+    const user = await findUserByEmail(payload.email);
     if (!user) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
@@ -69,7 +70,7 @@ export const validateToken = async (req, res) => {
 export const uploadProfile = async (req, res) => {
   try {
     const uid = req.params.uid;
-    const payload = await findUserById(uid);
+    const payload = await userService.findById(uid);
 
     const { path } = req.file;
 

@@ -6,6 +6,7 @@ import userModel from "../dao/models/user.model.js";
 import cartModel from "../dao/models/cart.model.js";
 import { options } from "../utils/commander.js";
 import { hashData, compareData } from "./bcrypt.js";
+import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 
 const enviorment = config.node_env;
 const env = options.mode;
@@ -13,8 +14,26 @@ const env = options.mode;
 const domain =
   enviorment === "production"
     ? config.production_domain
-    : "http://localhost:3000";
+    : "http://localhost:8080";
 
+// jwt
+options.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+options.secretOrKey = config.jwt_secret;
+
+passport.use(
+  new JwtStrategy(options, async (jwt_payload, done) => {
+    try {
+      const user = await userModel.findById(jwt_payload.id);
+      if (user) {
+        return done(null, user);
+      } else {
+        return done(null, false, { message: "Token no válido" });
+      }
+    } catch (error) {
+      return done(error, false);
+    }
+  })
+);
 export const initializePassport = () => {
   passport.use(
     "register",

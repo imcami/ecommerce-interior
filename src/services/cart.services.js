@@ -17,10 +17,6 @@ class CartService {
     }
   }
 
-  async deleteOne(pid) {
-    return await Cart.deleteOne(pid);
-  }
-
   async deleteCart(cid) {
     const emptyCart = await Cart.findOneById(cid);
     emptyCart.products = [];

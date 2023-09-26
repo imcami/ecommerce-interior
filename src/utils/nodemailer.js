@@ -22,6 +22,7 @@ export const sendMail = async (to, subject, text, html, attachments) => {
       text: text,
       html: html,
       attachments: attachments,
+      messageId: "id",
     });
     devLogger.info(`Message sent: ${info.messageId}`);
     return true;

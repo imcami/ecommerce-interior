@@ -4,23 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
-    <title>Reestablecer Contraseña</title>
+    <title>Recuperar Contraseña</title>
 </head>
 <body class="bg-gray-100 h-screen flex justify-center items-center">
 
     <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <form action="/api/v1/sessions/restore" method="post" class="space-y-4">
-            <p class="text-2xl font-semibold">RESTABLECER CONTRASEÑA:</p>
+            <p class="text-2xl font-semibold">Desea Recuperar su contraseña?:</p>
 
             <div class="flex flex-col space-y-2">
-                <label for="email" class="text-lg text-gray-600">Email:</label>
+                <label for="email" class="text-lg text-gray-600" placeholder="mail@gmail.com">Email:</label>
                 <input id="email" type="email" name="email" class="border rounded-md p-2 w-full focus:ring focus:ring-blue-200">
             </div>
 
             <div class="flex justify-end">
-                <input type="submit" value="SIGUIENTE" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:ring focus:ring-blue-200">
+                <input type="submit" value="Restablecer" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:ring focus:ring-blue-200">
             </div>
+<p class="mt-5 mb-3 text-gray-600">© Docklin - Hecho por: Camila Lo Nero</p>
+            
         </form>
+        
     </div>
 
 </body>

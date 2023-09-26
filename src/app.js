@@ -1,45 +1,20 @@
 import express from "express";
 import { engine } from "express-handlebars";
 import port from "./config/index.js";
-// import logger from "./middlewares/addlogger.middleware.js";
 import { router } from "./routes/index.js";
 import session from "express-session";
 import { __dirname } from "./utils/path.js";
 import { initializePassport } from "./utils/passport.js";
 import compression from "express-compression";
-import { addLogger } from "./utils/logger.js";
-import MongoStore from "connect-mongo"; //sessions con mongodb
+import { addLogger, prodLogger } from "./utils/logger.js";
+import MongoStore from "connect-mongo";
 import * as path from "path";
 import config from "./config/index.js";
 import passport from "passport";
+import cookieParser from "cookie-parser";
 
-//config
 export const app = express();
-
-const server = app.listen(port, () => {
-  console.log(`Server listening on port: ${port ?? 8080} 🥳`);
-  // logger.info(`Server listening on port: ${port} 🥳`);
-});
-
-//middleware
-app.use(
-  session({
-    //sessions en mongo atlas
-    store: MongoStore.create({
-      mongoUrl: config.mongo_url,
-      mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
-      ttl: 300, // 5 minutos
-    }),
-    secret: config.session_secret,
-    resave: false,
-    saveUninitialized: false, //Evita guardar sesiones vacias
-  })
-);
-initializePassport();
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(compression({ brotli: { enabled: true, zlib: {} } })); //Comprimir response con Brotli
-app.use(addLogger); //Agrego logger a request
+const PORT = config.port || 8080;
 
 // Handlebars
 app.engine(
@@ -61,9 +36,39 @@ app.engine(
     },
   })
 );
-
-// Handlebars como motor de plantillas por defecto
 app.set("view engine", "hbs");
-app.set("views", path.resolve(__dirname, "./views")); // ruta de mis vistas
+app.set("views", path.resolve(__dirname, "./views"));
+
+// Middlewares
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser(config.signed_cookie));
+app.use(express.static(path.join(__dirname, "../public")));
+app.use(addLogger);
+app.use(compression({ brotli: { enabled: true, zlib: {} } }));
+
+app.use(
+  session({
+    store: MongoStore.create({
+      mongoUrl: config.mongo_url,
+      mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
+      ttl: 300,
+    }),
+    secret: config.session_secret,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+// Passport
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
+
 // Rutas
 app.use("/api/v1", router);
+
+// Server
+const server = app.listen(PORT, () => {
+  prodLogger.info(`Server listening on port: ${PORT} 🥳`);
+});

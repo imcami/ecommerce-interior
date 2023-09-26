@@ -8,7 +8,7 @@
 </head>
 <body class="bg-gray-200 h-screen flex justify-center items-center">
   <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-    <form action="/api/v1/sessions/login" method="post" class="space-y-6">
+    <form action="/api/v1/session/login" method="post" class="space-y-6">
         <h1 class="text-2xl font-semibold mb-2">Iniciar Sesión</h1>
         
         <div>
@@ -22,27 +22,34 @@
           <input id="password" type="password" name="password" required 
                  class="mt-1 p-2 w-full border rounded-md">
         </div>
-
+ <div class="checkbox mb-2">
+            <label>
+                <input type="checkbox" value="remember-me" />
+                Recordarme
+            </label>
+        </div>
         <button type="submit" 
                 class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
                 Ingresar
         </button>
 
+
         <div class="text-center">
           <p class="text-sm">¿No tienes una cuenta? 
-            <a href="/api/v1/users/signup" class="text-blue-500 hover:underline">Regístrate</a>
+            <a href="/api/v1/session/signup" class="text-blue-500 hover:underline">Registrate</a>
           </p>
           <p class="text-sm">
-            <a href="/api/v1/users/restore" class="text-blue-500 hover:underline">¿Olvidaste tu contraseña?</a>
+            <a href="/api/v1/session/restore" class="text-blue-500 hover:underline">¿Olvidaste tu contraseña?</a>
           </p>
         </div>
           <p class="text-center mt-4 text-gray-600">O</p>
          <div class="text-center">
-        <button onclick="location.href='/api/v1/sessions/googleSignup'" 
+        <button onclick="location.href='/api/v1/session/googleSignup' " type="button"
                 class="w-full bg-red-500 text-white p-2 rounded hover:bg-red-600 mt-4">
                 Google
         </button>
     </div>
+    <p class="mt-5 mb-3 text-gray-600">© Docklin - Hecho por: Camila Lo Nero</p>
     </form>
   </div>
 </body>

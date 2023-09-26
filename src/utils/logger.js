@@ -1,5 +1,6 @@
 import winston from "winston";
 import { options } from "./commander.js";
+
 const levelOptions = {
   levels: {
     fatal: 0,
@@ -19,41 +20,29 @@ const levelOptions = {
   },
 };
 
-export const devLogger = winston.createLogger({
-  levels: levelOptions.levels,
-  transports: [
-    new winston.transports.Console({
-      level: "debug", //Nivel de loggueo, muestra info y niveles superiores
-      format: winston.format.combine(
-        winston.format.colorize({ colors: levelOptions.colors }),
-        winston.format.simple()
-      ),
-    }),
-    new winston.transports.File({
-      filename: "./errors.log",
-      level: "error", //Nivel de loggueo, muestra error y niveles superiores
-      format: winston.format.simple(),
-    }),
-  ],
-});
+winston.addColors(levelOptions.colors); // Inicializa los colores para Winston
 
-export const prodLogger = winston.createLogger({
-  levels: levelOptions.levels,
-  transports: [
-    new winston.transports.Console({
-      level: "info", //Nivel de loggueo, muestra info y niveles superiores
-      format: winston.format.combine(
-        winston.format.colorize({ colors: levelOptions.colors }),
-        winston.format.simple()
-      ),
-    }),
-    new winston.transports.File({
-      filename: "./errors.log",
-      level: "error", //Nivel de loggueo, muestra error y niveles superiores
-      format: winston.format.simple(),
-    }),
-  ],
-});
+const createLogger = (level) =>
+  winston.createLogger({
+    levels: levelOptions.levels,
+    transports: [
+      new winston.transports.Console({
+        level,
+        format: winston.format.combine(
+          winston.format.colorize({ colors: levelOptions.colors }),
+          winston.format.simple()
+        ),
+      }),
+      new winston.transports.File({
+        filename: "./errors.log",
+        level: "error",
+        format: winston.format.simple(),
+      }),
+    ],
+  });
+
+export const devLogger = createLogger("debug"); // Logger para desarrollo
+export const prodLogger = createLogger("info"); // Logger para producción
 
 export const addLogger = (req, res, next) => {
   req.logger = options.mode === "development" ? devLogger : prodLogger;
