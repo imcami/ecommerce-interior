@@ -1,5 +1,5 @@
 import config from "../config/index.js";
-import { findUserById } from "../services/users.service.js";
+import { findUserById, findUserByEmail } from "../services/users.service.js";
 import jwt from "jsonwebtoken";
 export const changeRol = async (req, res) => {
   try {
