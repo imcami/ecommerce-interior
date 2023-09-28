@@ -16,13 +16,13 @@
             <a href="/realtimeproducts" class="px-4 py-2 text-gray-700 hover:bg-gray-200 rounded">Administrador</a>
           {{/if}}
           {{#if user}}
-            <a href="/chat" class="px-4 py-2 text-gray-700 hover:bg-gray-200 rounded"><img src='/img/chat.png' alt="Chat" class="w-5 h-5"/></a>
+            <a href="/api/v1/chat" class="px-4 py-2 text-gray-700 hover:bg-gray-200 rounded"><img src='/img/chat.png' alt="Chat" class="w-5 h-5"/></a>
             <a href="/api/v1/cart/{{user.idCart}}" class="px-4 py-2 text-gray-700 hover:bg-gray-200 rounded">🛒</a>
-            <a href="/api/v1/sessions/logout" class="px-4 py-2 text-gray-700 hover:bg-gray-200 rounded">Cerrar sesión</a>
-            <a href="/api/v1/sessions/current" class="px-4 py-2 text-gray-700 hover:bg-gray-200 rounded">Perfil</a>
+            <a href="/api/v1/session/logout" class="px-4 py-2 text-gray-700 hover:bg-gray-200 rounded">Cerrar sesión</a>
+            <a href="/api/v1/session/profile" class="px-4 py-2 text-gray-700 hover:bg-gray-200 rounded">Perfil</a>
           {{else}}
-            <a href="/api/v1/users/login" class="px-4 py-2 text-gray-700 hover:bg-gray-200 rounded">Iniciar sesión</a>
-            <a href="/api/v1/users/signup" class="px-4 py-2 text-gray-700 hover:bg-gray-200 rounded">Registrarme</a>
+            <a href="/api/v1/session/login" class="px-4 py-2 text-gray-700 hover:bg-gray-200 rounded">Iniciar sesión</a>
+            <a href="/api/v1/session/signup" class="px-4 py-2 text-gray-700 hover:bg-gray-200 rounded">Registrarme</a>
           {{/if}}
         </div>
       </div>

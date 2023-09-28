@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 import config from "../config/index.js";
-import { devLogger } from "./logger.js";
+import logger from "./logger.js";
 
 const email = config.mailing_service;
 const password = config.mailing_password;
@@ -24,10 +24,10 @@ export const sendMail = async (to, subject, text, html, attachments) => {
       attachments: attachments,
       messageId: "id",
     });
-    devLogger.info(`Message sent: ${info.messageId}`);
+    logger.info(`Message sent: ${info.messageId}`);
     return true;
   } catch (error) {
-    devLogger.error(error);
+    logger.error(error);
     return false;
   }
 };

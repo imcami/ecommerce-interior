@@ -83,3 +83,12 @@ export const deleteUser = async (id) => {
     return error;
   }
 };
+
+export const updateLastConnection = async (id) => {
+  try {
+    const user = await usersManager.updateLastConnection(id);
+    return user;
+  } catch (error) {
+    return error;
+  }
+};

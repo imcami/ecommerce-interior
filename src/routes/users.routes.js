@@ -17,7 +17,7 @@ router.put("/premium/:uid", changeRol);
 router.post("/:uid/documents", uploader.array("document", 3), uploads);
 // SUBIDA DE FOTO DE PERFIL (POST)
 router.post(
-  "/:uid/current",
+  "/:uid/profile",
   isAuthenticated,
   uploader.single("profile"),
   uploadProfile

@@ -1,11 +1,20 @@
 import userModel from "./models/user.model.js";
-
+import { hashData } from "../utils/bcrypt.js";
+import jwt from "jsonwebtoken";
 import config from "../config/index.js";
 export default class UserDao {
   async findAll() {
     try {
       const users = await userModel.findAll();
       return users;
+    } catch (error) {
+      return error;
+    }
+  }
+  async findUserByEmail(email) {
+    try {
+      const user = await userModel.findOne({ email: email });
+      return user;
     } catch (error) {
       return error;
     }
@@ -129,6 +138,21 @@ export default class UserDao {
     }
   }
 }
+//generar token con jwt
+async function generateToken(user) {
+  try {
+    const token = await jwt.sign(
+      { id: user._id, email: user.email, role: user.role },
+      config.jwt_secret,
+      {
+        expiresIn: "1h",
+      }
+    );
+    return token;
+  } catch (error) {
+    return error;
+  }
+}
 
 async function generateUser() {
   const user = {
@@ -145,19 +169,4 @@ async function generateUser() {
     },
   };
   return user;
-}
-//generar token con jwt
-async function generateToken(user) {
-  try {
-    const token = await jwt.sign(
-      { id: user._id, email: user.email, role: user.role },
-      config.jwt_secret,
-      {
-        expiresIn: "1h",
-      }
-    );
-    return token;
-  } catch (error) {
-    return error;
-  }
 }

@@ -8,6 +8,7 @@ import { options } from "../utils/commander.js";
 import { hashData, compareData } from "./bcrypt.js";
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 
+//Obtener el entorno de ejecución
 const enviorment = config.node_env;
 const env = options.mode;
 
@@ -15,6 +16,8 @@ const domain =
   enviorment === "production"
     ? config.production_domain
     : "http://localhost:8080";
+
+//Passport
 
 // jwt
 options.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();

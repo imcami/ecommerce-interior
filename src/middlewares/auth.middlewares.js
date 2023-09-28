@@ -1,7 +1,7 @@
 export const isAuthenticated = (req, res, next) => {
   if (!req.user)
     return (
-      res.status(401).redirect("/api/v1/users/login"),
+      res.status(401).redirect("/api/v1/session/login"),
       req.logger.error("Registrese para poder ingresar")
     );
 
@@ -19,7 +19,7 @@ export const isAuthenticated = (req, res, next) => {
 export const authUser = (req, res, next) => {
   if (!req.user)
     return (
-      res.status(401).redirect("/api/v1/users/login"),
+      res.status(401).redirect("/api/v1/session/login"),
       req.logger.error("Registrese para poder ingresar")
     );
   if (req.user.role === "User") {
@@ -37,7 +37,7 @@ export const authUser = (req, res, next) => {
 export const authAdminOrUserPremium = (req, res, next) => {
   if (!req.user)
     return (
-      res.status(401).redirect("/api/v1/users/login"),
+      res.status(401).redirect("/api/v1/session/login"),
       req.logger.error("Registrese para poder ingresar")
     );
   if (req.user.role === "Admin") {

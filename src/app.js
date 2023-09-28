@@ -1,12 +1,11 @@
 import express from "express";
 import { engine } from "express-handlebars";
-import port from "./config/index.js";
 import { router } from "./routes/index.js";
 import session from "express-session";
 import { __dirname } from "./utils/path.js";
 import { initializePassport } from "./utils/passport.js";
 import compression from "express-compression";
-import { addLogger, prodLogger } from "./utils/logger.js";
+import logger from "./utils/logger.js";
 import MongoStore from "connect-mongo";
 import * as path from "path";
 import config from "./config/index.js";
@@ -44,7 +43,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(config.signed_cookie));
 app.use(express.static(path.join(__dirname, "../public")));
-app.use(addLogger);
+app.use(logger.log);
 app.use(compression({ brotli: { enabled: true, zlib: {} } }));
 
 app.use(
@@ -70,5 +69,5 @@ app.use("/api/v1", router);
 
 // Server
 const server = app.listen(PORT, () => {
-  prodLogger.info(`Server listening on port: ${PORT} 🥳`);
+  logger.info(`Server listening on port: ${PORT} 🥳`);
 });
