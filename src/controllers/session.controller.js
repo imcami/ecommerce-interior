@@ -11,7 +11,9 @@ import { hashData, compareData } from "../utils/bcrypt.js";
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
+
     const user = await findUserByEmail(email);
+    //Validar si el usuario existe y si la contraseña es correcta. Si es correcta, generar un token y guardarlo en una cookie.
     if (user) {
       const isMatch = await compareData(password, user.password);
       if (isMatch) {
@@ -20,6 +22,7 @@ export const loginUser = async (req, res) => {
         return res.redirect("/api/v1/products");
       }
     }
+
     return res.render("errorView", { message: "Usuario no encontrado" });
   } catch (error) {
     return res

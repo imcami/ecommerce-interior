@@ -1,5 +1,7 @@
 import { Logger } from "winston";
-import { create, findAll } from "../services/message.service.js";
+import { create } from "../services/message.service.js";
+import productService from "../services/products.service.js";
+
 import { v4 as uuidv4 } from "uuid";
 
 let ownerEmail;
@@ -25,7 +27,8 @@ export default (io) => {
 
     //Mensajes del chat
     const messagesList = async () => {
-      const messages = await findAll();
+      await productService.findAll(); // Fix: Remove unused variable
+      const messages = await productService.findAll();
       socket.emit("server:loadMessages", messages);
     };
     messagesList(); // envío arreglo de mensajes
@@ -41,7 +44,7 @@ export default (io) => {
     // Productos
 
     const productsList = async () => {
-      const products = await findAllProducts();
+      const products = await productService.findAll();
       //envío el listado de mis productos
       io.sockets.emit("server:loadProducts", products.docs);
     };
@@ -49,7 +52,7 @@ export default (io) => {
     productsList(); //envío mi arreglo de productos
 
     socket.on("client:newProduct", async (data) => {
-      const newProduct = await createOne({
+      const newProduct = await productService.createOne({
         title: data.title,
         description: data.description,
         price: data.price,
@@ -65,20 +68,20 @@ export default (io) => {
 
     socket.on("client:deleteProduct", async (pid) => {
       // elimino el producto seleccionado y actualizo el front
-      await deleteOne(pid);
+      await productService.deleteOne(pid);
       productsList();
     });
 
     socket.on("client:getProduct", async (pid) => {
-      const product = await findById(pid);
+      const product = await productService.findById(pid);
       socket.emit("server:selectedProduct", product);
     });
 
-    socket.on("client:updateProduct", async (updateProd) => {
-      await updateOne(updateProd._id, {
-        title: updateProd.title,
-        description: updateProd.description,
-        price: updateProd.price,
+    socket.on("client:updateProduct", async (updateOne) => {
+      await updateOne(updateOne._id, {
+        title: updateOne.title,
+        description: updateOne.description,
+        price: updateOne.price,
         thumbnail: image,
         code: uuidv4(),
         owner: ownerEmail,

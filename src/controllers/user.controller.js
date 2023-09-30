@@ -62,8 +62,7 @@ export const validateToken = async (req, res) => {
     }
     res.render("restorePass", { user: user });
   } catch (error) {
-    req.logger.error("Error in validateToken");
-    res.status(500).json({ error: error });
+    res.status(500).json({ error: error, message: "Error en validateToken" });
   }
 };
 

@@ -54,8 +54,8 @@ export const cancelPayment = async (req, res) => {
     const filter = { _id: cartId };
     const update = { products: beforePurchaseCart.products };
     const options = { new: true };
-    const newCart = await cartService.findOneAndUpdate(filter, update, options);
-    res.redirect(`/api/carts/${cartId}`);
+    await cartService.findOneAndUpdate(filter, update, options);
+    res.redirect(`/api/v1/cart/${cartId}`);
   } catch (error) {
     res.status(500).json({ error: { message: error.message } });
   }

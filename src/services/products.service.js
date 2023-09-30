@@ -1,6 +1,7 @@
 import ProductManager from "../dao/products.dao.js";
 
 const productManager = new ProductManager();
+
 class ProductService {
   // Buscar todos los productos
   async findAll(filter, obj) {
@@ -23,8 +24,8 @@ class ProductService {
   //Crear un producto con createOne()
   async createOne(obj) {
     try {
-      const products = await productManager.createOne(obj);
-      return products;
+      const newProduct = await productManager.createOne(obj);
+      return newProduct;
     } catch (error) {
       return error;
     }
