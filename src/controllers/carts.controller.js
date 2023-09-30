@@ -1,9 +1,9 @@
-import cartService from "../services/cart.services.js";
+import { createOne, findByIdAndPopulate } from "../services/cart.services.js";
 import { isAuthenticated } from "../middlewares/auth.middlewares.js";
 import ticketService from "../services/ticket.service.js";
 export const createCart = async (req, res) => {
   try {
-    const newCart = await cartService.createOne({ products: [] });
+    const newCart = await createOne({ products: [] });
     res.status(200).json(newCart);
     return (req.session.cart = newCart._id); // Guardo el id del carrito en la sesión
   } catch (error) {
@@ -18,51 +18,44 @@ export const findCartById = async (req, res) => {
     if (!req.session.user) {
       res.redirect("/");
     }
-    const cart = await cartService.findByIdAndPopulate(cid, "products.id_prod");
+    const cart = await findByIdAndPopulate(cid, "products.id_prod");
     res.status(200).render("carts", { cart: cart, user: req.session.user });
   } catch (error) {
-    req.logger.error("Error en getCartById");
-    res.status(500).send("ERROR: " + error);
+    res
+      .status(500)
+      .send({ message: "Hubo un error al buscar el carrito.", error: error });
   }
 };
-
 export const updateOne = async (req, res) => {
+  const cid = req.params.cid;
+  const { pid, quantity } = req.body;
   try {
-    const cid = req.params.cid;
-    const { pid, quantity } = req.body;
-
-    const cart = await cartService.findOneById(cid);
-
-    if (!cart) {
-      return res.status(404).json({ message: "Carrito no encontrado." });
-    }
-
+    const cart = await cartService.findByIdAndPopulate(cid, "products.id_prod");
     const productIndex = cart.products.findIndex(
-      (prod) => prod.id_prod === pid
+      (product) => product.id_prod == pid
     );
-
     if (productIndex === -1) {
       return res
         .status(404)
         .json({ message: "Producto no encontrado en el carrito." });
     }
-
     const updatedQuantity = cart.products[productIndex].quantity + quantity;
-
-    const updateResult = await cartModel.updateOne(
-      { _id: cid, "products.id_prod": pid },
-      { $set: { "products.$.quantity": updatedQuantity } }
+    const filter = { _id: cid, "products.id_prod": pid };
+    const update = { $set: { "products.$.quantity": updatedQuantity } };
+    const options = { new: true };
+    const updatedCart = await cartService.findOneAndUpdate(
+      filter,
+      update,
+      options
     );
-
-    if (updateResult.nModified !== 1) {
-      throw new Error("Error al actualizar el producto en el carrito.");
-    }
-
-    return res
-      .status(200)
-      .json({ message: "Producto actualizado exitosamente." });
+    res.status(200).send(updatedCart);
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    res
+      .status(500)
+      .send({
+        message: "Hubo un error al actualizar el carrito.",
+        error: error,
+      });
   }
 };
 

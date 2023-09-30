@@ -63,14 +63,4 @@ export default class CartDao {
       return error;
     }
   }
-
-  async updateCart(cid, pid, quantity) {
-    try {
-      const cart = await this.findOneById(cid);
-      cart.products = { products: [{ id_prod: pid, quantity: quantity }] };
-      return cart;
-    } catch (error) {
-      return error;
-    }
-  }
 }

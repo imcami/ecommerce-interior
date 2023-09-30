@@ -1,9 +1,10 @@
 import UsersManager from "../dao/users.dao.js";
 
 const usersManager = new UsersManager();
+
 export const findUserByEmail = async (email) => {
   try {
-    const userEmail = await usersManager.findByEmail(email);
+    const userEmail = await usersManager.findUserByEmail(email);
     return userEmail;
   } catch (error) {
     return error;
@@ -48,9 +49,9 @@ export const findUserToUpdate = async (tokenPass, timeToExpiredPass) => {
   }
 };
 
-export const createUser = async (obj) => {
+export const createUser = async () => {
   try {
-    const user = await usersManager.createOne(obj);
+    const user = await usersManager.mockUsers();
     return user;
   } catch (error) {
     return error;

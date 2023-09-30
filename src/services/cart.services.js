@@ -1,36 +1,77 @@
-import cartManager from "../dao/cart.dao.js";
+import CartManager from "../dao/cart.dao.js";
 
-const Cart = new cartManager();
-class CartService {
-  async createOne(obj) {
-    return await Cart.createOne(obj);
-  }
+const cartManager = new CartManager();
 
-  async findOneById(cid) {
-    return await Cart.findOneById(cid);
+export const createOne = async (cart) => {
+  try {
+    const newCart = await cartManager.createOne(cart);
+    return newCart;
+  } catch (error) {
+    throw error;
   }
-  async findOneAndUpdate(filter, update, options) {
-    try {
-      return await Cart.findOneAndUpdate(filter, update, options);
-    } catch (error) {
-      return error;
-    }
-  }
+};
 
-  async deleteCart(cid) {
-    const emptyCart = await Cart.findOneById(cid);
-    emptyCart.products = [];
-    await emptyCart.save();
-    return emptyCart;
-  }
-
-  async updateCart(cid, pid, quantity) {
-    const cart = await Cart.findOneById(cid);
-    cart.products = { products: [{ id_prod: pid, quantity: quantity }] };
-    await cart.updateOne();
+export const findById = async (id) => {
+  try {
+    const cart = await cartManager.findById(id);
     return cart;
+  } catch (error) {
+    throw error;
   }
-}
+};
 
-const cartService = new CartService();
-export default cartService;
+export const findByIdAndPopulate = async (id, populate) => {
+  try {
+    const cart = await cartManager.findByIdAndPopulate(id, populate);
+    return cart;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const findOneAndUpdate = async (filter, update, options) => {
+  try {
+    const updatedCart = await cartManager.findOneAndUpdate(
+      filter,
+      update,
+      options
+    );
+    return updatedCart;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteOne = async (id) => {
+  try {
+    const deletedCart = await cartManager.deleteOne(id);
+    return deletedCart;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteProductOnCart = async (cid, pid) => {
+  try {
+    const filter = { _id: cid };
+    const update = { $pull: { products: { id_prod: pid } } };
+    const options = { new: true };
+    const updatedCart = await cartManager.findOneAndUpdate(
+      filter,
+      update,
+      options
+    );
+    return updatedCart;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteCart = async (cid) => {
+  try {
+    const emptyCart = await cartManager.deleteCart(cid);
+    return emptyCart;
+  } catch (error) {
+    throw error;
+  }
+};

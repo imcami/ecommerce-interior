@@ -8,7 +8,9 @@ export default class UserDao {
       const users = await userModel.findAll();
       return users;
     } catch (error) {
-      return error;
+      return res
+        .status(500)
+        .json({ message: "error al encontrar todos los usuarios" });
     }
   }
   async findUserByEmail(email) {
@@ -16,15 +18,20 @@ export default class UserDao {
       const user = await userModel.findOne({ email: email });
       return user;
     } catch (error) {
-      return error;
+      return res
+        .status(500)
+        .json({ message: "error al encontrar el email del usuario" });
     }
   }
   async findUserById(id) {
     try {
       const user = await userModel.findById(id);
+
       return user;
     } catch (error) {
-      return error;
+      return res
+        .status(500)
+        .json({ message: "error al encontrar el id del usuario " });
     }
   }
   async findByIdAndPopulate(id, populateStr) {
@@ -32,7 +39,9 @@ export default class UserDao {
       const user = await userModel.findById(id).populate(populateStr);
       return user;
     } catch (error) {
-      return error;
+      return res
+        .status(500)
+        .json({ message: "error al encontrar el usuario by populate" });
     }
   }
   async findOneandUpdate(filter, update, options) {
@@ -40,7 +49,9 @@ export default class UserDao {
       const user = await userModel.findOneAndUpdate(filter, update, options);
       return user;
     } catch (error) {
-      return error;
+      return res
+        .status(500)
+        .json({ message: "error al encontrar al actualizar el usuario" });
     }
   }
   async create(user) {
@@ -48,7 +59,7 @@ export default class UserDao {
       const newUser = await userModel.create(user);
       return newUser;
     } catch (error) {
-      return error;
+      return res.status(500).json({ message: "error al crear el usuario" });
     }
   }
   async delete(id) {
@@ -56,9 +67,11 @@ export default class UserDao {
       const user = await userModel.findByIdAndDelete(id);
       return user;
     } catch (error) {
-      return error;
+      return res.status(500).json({ message: "error al eliminar el usuario" });
     }
   }
+
+  // MockUsers es un metodo que genera usuarios falsos
   async mockUsers(quantity) {
     try {
       const users = [];
@@ -125,6 +138,16 @@ export default class UserDao {
       return error;
     }
   }
+  async generateToken(user) {
+    try {
+      const token = jwt.sign(user, config.jwt.secret, {
+        expiresIn: config.jwt.expiration,
+      });
+      return token;
+    } catch (error) {
+      return error;
+    }
+  }
   async uploadDocument(id, file, docName) {
     try {
       const filepath = file.path.split("public")[1];
@@ -136,21 +159,6 @@ export default class UserDao {
     } catch (error) {
       return error;
     }
-  }
-}
-//generar token con jwt
-async function generateToken(user) {
-  try {
-    const token = await jwt.sign(
-      { id: user._id, email: user.email, role: user.role },
-      config.jwt_secret,
-      {
-        expiresIn: "1h",
-      }
-    );
-    return token;
-  } catch (error) {
-    return error;
   }
 }
 

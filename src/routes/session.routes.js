@@ -4,6 +4,7 @@ import {
   googleSignup,
   loginUser,
   logout,
+  renderLogin,
   restorePass,
   signupUser,
 } from "../controllers/session.controller.js";
@@ -23,6 +24,7 @@ router.get("/logout", logout);
 router.get("/restore", restorePass);
 //Validar token para restablecer contraseña (GET)
 router.get("/restorePass/:tokenPass", validateToken, restorePass);
+
 // RESTABLECER CONTRASEÑA DE USUARIO (POST)
 router.post("/restorePass", restorePass);
 

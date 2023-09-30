@@ -1,17 +1,14 @@
-import cartService from "../services/cart.services.js";
+import { findOneAndUpdate } from "../services/cart.services.js";
 import PaymentService from "../services/payment.services.js";
 import { sendMail } from "../utils/nodemailer.js";
 
 // Generar una orden de compra llamando esta ruta (GET), redirecciona al usuario a la pagina de pago.
 export const createCheckoutSession = async (req, res) => {
   try {
-    const cartId = req.session.user.cart.id_cart;
-    const paymentService = new PaymentService();
     const { ticket } = req.session.purchase;
-    //const customer = await paymentService.createCustomer(ticket);
+    const paymentService = new PaymentService();
     const checkoutSession = await paymentService.createCheckoutSession(ticket);
     res.redirect(303, checkoutSession.url);
-    //res.json(paymentIntent);
   } catch (error) {
     res.status(400).json({ error: { message: error.message } });
   }
@@ -54,7 +51,7 @@ export const cancelPayment = async (req, res) => {
     const filter = { _id: cartId };
     const update = { products: beforePurchaseCart.products };
     const options = { new: true };
-    await cartService.findOneAndUpdate(filter, update, options);
+    await findOneAndUpdate(filter, update, options);
     res.redirect(`/api/v1/cart/${cartId}`);
   } catch (error) {
     res.status(500).json({ error: { message: error.message } });
