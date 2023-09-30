@@ -97,10 +97,10 @@ export const deleteProductOnCart = async (req, res) => {
 
     res.status(200).json(updatedCart);
   } catch (error) {
-    req.logger.error("Error en deleteProductOnCart: " + error);
-
     // Enviar error al cliente
-    res.status(500).json({ message: "Error al procesar la solicitud." });
+    res
+      .status(500)
+      .json({ error: error, message: "Error al procesar la solicitud." });
   }
 };
 
@@ -155,17 +155,13 @@ export const purchaseCart = async (req, res, next) => {
           $pull: { products: { id_prod: cartProduct.id_prod._id } },
         };
         const optionsCart = { new: true };
-        const updatedCart = await cartService.findOneAndUpdate(
-          filterCart,
-          updateCart,
-          optionsCart
-        );
+        await cartService.findOneAndUpdate(filterCart, updateCart, optionsCart);
 
         // Se reduce el stock del producto
         const filterProduct = { _id: cartProduct.id_prod._id };
         const updateProduct = { $inc: { stock: -cartProduct.quantity } };
         const optionsProduct = { new: true };
-        const updatedProduct = await productService.findOneAndUpdate(
+        await productService.findOneAndUpdate(
           filterProduct,
           updateProduct,
           optionsProduct

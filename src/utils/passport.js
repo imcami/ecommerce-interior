@@ -9,11 +9,10 @@ import { hashData, compareData } from "./bcrypt.js";
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 
 //Obtener el entorno de ejecución
-const enviorment = config.node_env;
-const env = options.mode;
+const environment = config.node_env;
 
 const domain =
-  enviorment === "production"
+  environment === "production"
     ? config.production_domain
     : "http://localhost:8080";
 
@@ -110,8 +109,11 @@ export const initializePassport = () => {
         clientSecret: config.google_client_secret,
         callbackURL: `${domain}/auth/google/callback`,
       },
-      async (accessToken, refreshToken, profile, cb) => {
+      async (_, __, profile, cb) => {
         try {
+          const user = await userModel.findOne({
+            email: profile.emails[0].value,
+          });
           //Crear el usario si este no existe
           if (!user) {
             const newUser = new userModel({

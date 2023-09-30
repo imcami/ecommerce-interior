@@ -4,9 +4,6 @@ import {
   googleSignup,
   loginUser,
   logout,
-  renderLogin,
-  renderLogout,
-  renderSignup,
   restorePass,
   signupUser,
 } from "../controllers/session.controller.js";
@@ -17,23 +14,13 @@ const router = Router();
 //                                      ---- Sin passport ----
 
 //Ruta para iniciar sesión de usuario (GET)
-router.get("/login", renderLogin, loginUser);
+router.get("/login", loginUser);
 // Ruta para registro de usuario (GET)
-router.post(
-  "/signup",
-  (req, res) => {
-    res.render("signup");
-  },
-  signupUser
-);
+router.get("/signup", signupUser);
 //Ruta para cerrar sesión de usuario (GET)
-router.get("/logout", (req, res) => {
-  res.render("logout"), logout;
-});
+router.get("/logout", logout);
 // RESTABLECER CONTRASEÑA DE USUARIO (GET)
-router.get("/restore", (req, res) => {
-  res.render("restore");
-});
+router.get("/restore", restorePass);
 //Validar token para restablecer contraseña (GET)
 router.get("/restorePass/:tokenPass", validateToken, restorePass);
 // RESTABLECER CONTRASEÑA DE USUARIO (POST)

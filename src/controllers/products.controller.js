@@ -1,5 +1,5 @@
 import productService from "../services/products.service.js";
-import { addLogger } from "../utils/logger.js";
+import logger from "../utils/logger.js";
 export const findAllProducts = async (req, res) => {
   try {
     const products = await productService.getAll(query);
@@ -26,7 +26,7 @@ export const findProduct = async (req, res) => {
       res.status(200).json({ message: "No hay productos" });
     }
   } catch (error) {
-    addLogger.error("Error al encontrar el producto");
+    logger.error("Error al encontrar el producto");
     res.status(500).json({ error: error });
   }
 };
@@ -79,7 +79,7 @@ export const createOneProduct = async (req, res, next) => {
       .status(201)
       .send({ message: "Producto creado exitosamente", product: newProduct });
   } catch (error) {
-    req.addLogger.error("Error in createOneProduct");
+    req.logger.error("Error in createOneProduct");
     next(error);
   }
 };
