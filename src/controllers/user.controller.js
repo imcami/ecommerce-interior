@@ -1,5 +1,10 @@
 import config from "../config/index.js";
-import { findUserById, findUserByEmail } from "../services/users.service.js";
+import {
+  findUserById,
+  findUserByEmail,
+  mockUsers,
+  findUserToUpdate,
+} from "../services/users.service.js";
 import jwt from "jsonwebtoken";
 export const changeRol = async (req, res) => {
   try {
@@ -12,7 +17,7 @@ export const changeRol = async (req, res) => {
     // si mi usuario subió los 3 documentos requeridos
     if (user.documents.length === 3) {
       // Cambio a user premium
-      await updateUser({ _id: uid }, { role: "Premium" }, { new: true });
+      await findUserToUpdate({ _id: uid }, { role: "Premium" }, { new: true });
     } else {
       return res
         .status(404)
@@ -69,7 +74,7 @@ export const validateToken = async (req, res) => {
 export const uploadProfile = async (req, res) => {
   try {
     const uid = req.params.uid;
-    const payload = await userService.findById(uid);
+    const payload = await findUserById(uid);
 
     const { path } = req.file;
 
@@ -86,5 +91,15 @@ export const uploadProfile = async (req, res) => {
   } catch (error) {
     req.logger.error("Error in uploads");
     res.status(500).json({ error: error });
+  }
+};
+
+export const getMockUsers = async (req, res) => {
+  try {
+    const users = await mockUsers(100);
+    res.status(200).json({ status: "success", payload: users });
+  } catch (error) {
+    req.logger.error("Error en getMockUsers");
+    res.status(500).json({ status: "error", payload: error });
   }
 };

@@ -13,14 +13,13 @@ export default class UserDao {
         .json({ message: "error al encontrar todos los usuarios" });
     }
   }
-  async findUserByEmail(email) {
+
+  async findByEmail(email) {
     try {
-      const user = await userModel.findOne({ email: email });
+      const user = await userModel.findOne({ email });
       return user;
     } catch (error) {
-      return res
-        .status(500)
-        .json({ message: "error al encontrar el email del usuario" });
+      return error;
     }
   }
   async findUserById(id) {
@@ -32,6 +31,22 @@ export default class UserDao {
       return res
         .status(500)
         .json({ message: "error al encontrar el id del usuario " });
+    }
+  }
+  async findByToken(tokenPass) {
+    try {
+      const user = await userModel.findOne({ tokenPass });
+      return user;
+    } catch (error) {
+      return error;
+    }
+  }
+  async findByExpired(tokenPass, timeToExpiredPass) {
+    try {
+      const user = await userModel.findOne(tokenPass, timeToExpiredPass);
+      return user;
+    } catch (error) {
+      return error;
     }
   }
   async findByIdAndPopulate(id, populateStr) {
@@ -54,9 +69,9 @@ export default class UserDao {
         .json({ message: "error al encontrar al actualizar el usuario" });
     }
   }
-  async create(user) {
+  async create(obj) {
     try {
-      const newUser = await userModel.create(user);
+      const newUser = await userModel.create(obj);
       return newUser;
     } catch (error) {
       return res.status(500).json({ message: "error al crear el usuario" });
@@ -71,27 +86,6 @@ export default class UserDao {
     }
   }
 
-  // MockUsers es un metodo que genera usuarios falsos
-  async mockUsers(quantity) {
-    try {
-      const users = [];
-      for (let i = 0; i < quantity; i++) {
-        const user = generateUser();
-        users.push(user);
-      }
-      return users;
-    } catch (error) {
-      return error;
-    }
-  }
-  async getUserTokenFrom(user) {
-    try {
-      const { _id, email, role } = user;
-      return { _id, email, role };
-    } catch (error) {
-      return error;
-    }
-  }
   async resetPassword(email, newPassword) {
     try {
       const hashPassword = hashData(newPassword);
@@ -140,8 +134,8 @@ export default class UserDao {
   }
   async generateToken(user) {
     try {
-      const token = jwt.sign(user, config.jwt.secret, {
-        expiresIn: config.jwt.expiration,
+      const token = jwt.sign(user, config.jwt_secret, {
+        expiresIn: config.jwt_expires_in,
       });
       return token;
     } catch (error) {

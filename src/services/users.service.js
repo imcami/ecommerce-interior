@@ -4,7 +4,7 @@ const usersManager = new UsersManager();
 
 export const findUserByEmail = async (email) => {
   try {
-    const userEmail = await usersManager.findUserByEmail(email);
+    const userEmail = await usersManager.findByEmail(email);
     return userEmail;
   } catch (error) {
     return error;
@@ -32,6 +32,19 @@ export const findUserByToken = async (tokenPass) => {
   try {
     const userToken = await usersManager.findByToken(tokenPass);
     return userToken;
+  } catch (error) {
+    return error;
+  }
+};
+// MockUsers es un metodo que genera usuarios falsos
+export const mockUsers = async (quantity) => {
+  try {
+    const users = [];
+    for (let i = 0; i < quantity; i++) {
+      const user = generateUser();
+      users.push(user);
+    }
+    return users;
   } catch (error) {
     return error;
   }

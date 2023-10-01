@@ -1,38 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tu Carrito de compras🛒</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body class="bg-gray-100">
-    <div class="container mx-auto p-5">
-        <h1 class="text-3xl font-semibold mb-5">Tu Carrito de Compras 🛒</h1>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {{#each cart.products}}
-            <div class="bg-white rounded-lg shadow-lg p-5">
-                <div class="flex justify-between items-center">
-                    <h4 class="text-lg font-medium">{{this.id_prod.title}}</h4>
-                    <form action="/api/v1/cart/{{../cart._id}}/product/{{this.id_prod._id}}?_method=DELETE" method="POST">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <button class="text-red-600 hover:text-red-700" type="submit">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </form>
-                </div>
-                <p class="text-sm text-gray-700 mt-2">Precio: ${{this.id_prod.price}}</p>
-                <p class="text-sm text-gray-700 mt-2">Cantidad: {{this.quantity}}</p>
-            </div>
-            {{else}}
-            <div class="bg-white rounded-lg shadow-lg p-5 mx-auto">
-                <p class="text-lg text-gray-700">El carrito está vacío. Todavía no agregaste productos a tu carrito.</p>
-                <a href="/api/v1/products" class="bg-green-500 text-white mt-4 px-4 py-2 rounded hover:bg-green-600">
-                    Ver productos disponibles
-                </a>
-            </div>
-            {{/each}}
-        </div>
+<body class="bg-gray-100 p-6">
+    <div class="container mx-auto">
+        <h1 class="text-3xl font-bold mb-4">Tu Carrito de Compras</h1>
+
+        {{#if cart.products.length}}
+            <table class="min-w-full leading-normal">
+                <thead>
+                    <tr>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Producto
+                        </th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Precio
+                        </th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Cantidad
+                        </th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Total
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each cart.products}}
+                        <tr>
+                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">{{this.name}}</td>
+                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">{{this.price}}</td>
+                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">{{this.quantity}}</td>
+                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">{{multiply this.price this.quantity}}</td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+            <p class="mt-4 text-xl">Total del Carrito: {{cartTotal cart.products}}</p>
+            <a href="/checkout" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 inline-block">Proceder al Pago</a>
+        {{else}}
+            <p class="text-xl">Tu carrito está vacío.</p>
+        {{/if}}
     </div>
 </body>
-</html>

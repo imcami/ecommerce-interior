@@ -31,7 +31,7 @@ class ProductService {
     }
   }
   // Actualizar un producto con updateOne()
-  async updateOne(id, obj) {
+  async updateOneProd(id, obj) {
     try {
       const updateProduct = await productManager.updateOne(id, obj);
       return updateProduct;

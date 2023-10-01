@@ -5,6 +5,7 @@ import {
   loginUser,
   logout,
   renderLogin,
+  renderSignup,
   restorePass,
   signupUser,
 } from "../controllers/session.controller.js";
@@ -14,10 +15,10 @@ const router = Router();
 
 //                                      ---- Sin passport ----
 
-//Ruta para iniciar sesión de usuario (GET)
-router.get("/login", loginUser);
+//Ruta para iniciar sesión de usuario (post)
+router.post("/login", loginUser, renderLogin);
 // Ruta para registro de usuario (GET)
-router.get("/signup", signupUser);
+router.get("/signup", signupUser, renderSignup);
 //Ruta para cerrar sesión de usuario (GET)
 router.get("/logout", logout);
 // RESTABLECER CONTRASEÑA DE USUARIO (GET)
