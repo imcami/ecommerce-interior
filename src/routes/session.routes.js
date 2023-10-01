@@ -32,7 +32,7 @@ router.post("/restorePass", restorePass);
 //                                      ---- Con passport ----
 
 // Ruta para iniciar sesión de usuario (GET)
-router.get("/login", passport.authenticate("local"), loginUser);
+router.get("/login", loginUser);
 // Ruta para registro de usuario (GET)
 router.get("/googleSignup", googleSignup);
 
