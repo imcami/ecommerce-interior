@@ -94,7 +94,7 @@ export const updateOneProduct = async (req, res) => {
       req.user.role === "Admin" ||
       (req.user.role === "Premium" && req.user.email === product.owner)
     ) {
-      await updateOne(pid, obj);
+      await productService.updateOneProd(pid, obj);
       res.status(200).send({ message: "Product update" });
     }
   } catch (error) {
