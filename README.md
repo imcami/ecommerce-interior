@@ -26,7 +26,7 @@
 	🚧 Docklin v1 🚀 Terminada...  🚧
 </h4> 
 <p> Documentation</p>
-[Postman Documentation](https://documenter.getpostman.com/view/26873276/2s9YJaWNrs)
+[Postman Documentation](https://documenter.getpostman.com/view/26873276/2s9YJc1hcK)
 
 <hr> 
 
